@@ -54,20 +54,22 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         } else {
 
             if (!preg_match("/^[a-zA-Z0-9 \,\(\)\n]*$/", $_POST['posts_tags'])) {
-                $error['posts_tagsErr'] = "Only letters and white space allowed";
+                $error['posts_tagsErr'] = "Only letters and commas";
                 die(json_encode(array("posts_tagsErr" => $error['posts_tagsErr'])));
 
             }
         }
         $posts_tags = $_POST['posts_tags'];
 
-//        if (empty($_POST['posts_img'])) {
-//            $error['posts_imgErr'] = "You must Select an image";
-//            die(json_encode(array("posts_imgErr" => $error['posts_imgErr'])));
-//        }
-        $posts_img = $_FILES['posts_img']['name']; //geting name of the image;
-        $posts_img_tmp = $_FILES['posts_img']['tmp_name']; //getting image temporary name on the server
-        move_uploaded_file($posts_img_tmp, "images/$posts_img"); //the function move_uploaded_file moves image from tmp storage to folder
+        if (empty($_FILES['posts_img']['name'])) {
+            $error['posts_imgErr']="Get an image for better content";
+            die(json_encode(array("posts_imgErr" => $error['posts_imgErr'])));
+        }else{
+            $posts_img = $_FILES['posts_img']['name']; //geting name of the image;
+            $posts_img_tmp = $_FILES['posts_img']['tmp_name']; //getting image temporary name on the server
+            move_uploaded_file($posts_img_tmp, "images/$posts_img"); //the function move_uploaded_file moves image from tmp storage to folder
+
+        }
 
 
         if (empty($_POST['posts_author'])) {
@@ -106,8 +108,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         } else {
 
-            $insertSql = "INSERT INTO `posts` (menu_id,posts_title,post_code,posts_body,posts_tags,posts_img,posts_author,editor_pick,posts_status) 
-VALUES ({$menu_id},'{$posts_title}','{$post_code}','{$posts_body}','{$posts_tags}','{$posts_img}','{$posts_author}',{$editor_pick},{$posts_status})";
+            $insertSql = "INSERT INTO `posts` (menu_id,posts_title,post_code,posts_body,posts_tags,posts_img,posts_author,editor_pick,posts_status,date_created) 
+VALUES ({$menu_id},'{$posts_title}','{$post_code}','{$posts_body}','{$posts_tags}','{$posts_img}','{$posts_author}',{$editor_pick},{$posts_status},NOW())";
             $insertSql_exec = mysqli_query($conn, $insertSql);
             if ($insertSql_exec) {
                 die(json_encode(array("success" => "New post created successfully")));
@@ -135,9 +137,8 @@ $error=array('menu_titleErr'=>"");
             $error['menu_titleErr'] = "You must Enter a post title";
             die(json_encode(array("menu_titleErr" => $error['menu_titleErr'])));
         } else {
-
-            if (!preg_match("/^[a-zA-Z0-9 \,\(\)\n]*$/", $_POST['menu_title'])) {
-                $error['menu_titleErr'] = "Only letters and white space allowed";
+            if (!preg_match("/^[a-zA-Z0-9  \#\(\)\n]*$/", $_POST['menu_title'])) {
+                $error['menu_titleErr'] = "Only letters No space";
                 die(json_encode(array("menu_titleErr" => $error['menu_titleErr'])));
 
             }
@@ -182,7 +183,7 @@ $error=array('headline_nameErr'=>"",'Hpost_codeErr'=>"");
         } else {
 
             if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['headline_name'])) {
-                $error['headline_nameErr'] = "Only letters and white space allowed";
+                $error['headline_nameErr'] = "Only letters";
                 die(json_encode(array("headline_nameErr" => $error['headline_nameErr'])));
 
             }
@@ -195,7 +196,7 @@ $error=array('headline_nameErr'=>"",'Hpost_codeErr'=>"");
             die(json_encode(array("Hpost_codeErr" => $error['Hpost_codeErr'])));
         } else {
 
-            if (!preg_match("/^[a-zA-Z0-9]*$/", $_POST['Hpost_code'])) {
+            if (!preg_match("/^[a-zA-Z0-9 ]*$/", $_POST['Hpost_code'])) {
                 $error['Hpost_codeErr'] = "Only letters and white space allowed";
                 die(json_encode(array("Hpost_codeErr" => $error['Hpost_codeErr'])));
 
@@ -255,6 +256,8 @@ $post_id=$_POST['deleteId'];
 
     }
     ###Delete POST End####}
+
+
 
 }
 
