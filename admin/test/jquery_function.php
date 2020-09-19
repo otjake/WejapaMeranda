@@ -1,5 +1,5 @@
 <?php
-require ("db.php");
+require("db.php");
         if(isset($_POST['sub_check'])){
             global $conn;
         if(!empty($_POST['email'])) {
@@ -8,7 +8,7 @@ require ("db.php");
             $checker_exec = mysqli_query($conn, $checker);
             $count = mysqli_num_rows($checker_exec);
             if ($count === 0){
-                $viewer = "INSERT INTO viewer (`viewer_email`,`date_created`) VALUES ('$email',NOW())";
+                $viewer = "INSERT INTO viewer (`viewer_email`) VALUES ('$email')";
                 $viewer_exec = mysqli_query($conn, $viewer);
                 if ($viewer_exec) {
                     die(json_encode(array("success" => "registered")));

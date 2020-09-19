@@ -1,5 +1,5 @@
-
 <?php
+
 require ("db.php");
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     global $conn;
@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }else{
             $posts_img = $_FILES['posts_img']['name']; //geting name of the image;
             $posts_img_tmp = $_FILES['posts_img']['tmp_name']; //getting image temporary name on the server
-            move_uploaded_file($posts_img_tmp, "images/$posts_img"); //the function move_uploaded_file moves image from tmp storage to folder
+            move_uploaded_file($posts_img_tmp, "../images/$posts_img"); //the function move_uploaded_file moves image from tmp storage to folder
 
         }
 
@@ -107,9 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             die(json_encode(array("mainErr" => $error['mainErr'])));
 
         } else {
-
-            $insertSql = "INSERT INTO `posts` (menu_id,posts_title,post_code,posts_body,posts_tags,posts_img,posts_author,editor_pick,posts_status,date_created) 
-VALUES ({$menu_id},'{$posts_title}','{$post_code}','{$posts_body}','{$posts_tags}','{$posts_img}','{$posts_author}',{$editor_pick},{$posts_status},NOW())";
+$user_id=$_SESSION['user_id'];
+            $insertSql = "INSERT INTO `posts` (menu_id,user_id,posts_title,post_code,posts_body,posts_tags,posts_img,posts_author,editor_pick,posts_status,date_created) 
+VALUES ({$menu_id},{$user_id},'{$posts_title}','{$post_code}','{$posts_body}','{$posts_tags}','{$posts_img}','{$posts_author}',{$editor_pick},{$posts_status},NOW())";
             $insertSql_exec = mysqli_query($conn, $insertSql);
             if ($insertSql_exec) {
                 die(json_encode(array("success" => "New post created successfully")));
@@ -151,8 +151,8 @@ $error=array('menu_titleErr'=>"");
 
         } else {
 
-            $insertSql = "INSERT INTO `menu` (menu_title) 
-VALUES ('{$menu_title}')";
+            $insertSql = "INSERT INTO `menu` (menu_title,date_created) 
+VALUES ('{$menu_title}',NOW())";
             $insertSql_exec = mysqli_query($conn, $insertSql);
             if ($insertSql_exec) {
                 die(json_encode(array("success" => "New post created successfully")));
@@ -257,11 +257,99 @@ $post_id=$_POST['deleteId'];
     }
     ###Delete POST End####}
 
+    ###Delete Categotry or menu####
+
+
+    if (!empty($_POST['deleteCat'])) {
+
+$cat_id=$_POST['deleteCat'];
+
+
+            $insertSql = "DELETE FROM `menu` WHERE `menu_id`={$cat_id}";
+            $insertSql_exec = mysqli_query($conn, $insertSql);
+            if ($insertSql_exec) {
+                die(json_encode(array("success" => "Deleting")));
+
+            } else {
+                die(json_encode(array("insertErr" => "Unable to delete")));
+            }
 
 
 
+    }
+    ###Delete Categotry or menu End####}
 
 
+    ###Delete oser ####
+
+
+    if (!empty($_POST['deleteuser'])) {
+
+$user_id=$_POST['deleteuser'];
+
+
+            $insertSql = "DELETE FROM `admin` WHERE `id`={$user_id}";
+            $insertSql_exec = mysqli_query($conn, $insertSql);
+            if ($insertSql_exec) {
+                die(json_encode(array("success" => "Deleting")));
+
+            } else {
+                die(json_encode(array("insertErr" => "Unable to delete")));
+            }
+
+
+
+    }
+    ###Delete User####}
+
+
+    ###Subscribe####
+    if(isset($_POST['sub_check'])){
+        global $conn;
+        if(!empty($_POST['email'])) {
+            $email = $_POST['email'];
+            $checker = "SELECT * FROM viewer WHERE viewer_email='$email'";
+            $checker_exec = mysqli_query($conn, $checker);
+            $count = mysqli_num_rows($checker_exec);
+            if ($count === 0){
+                $viewer = "INSERT INTO viewer (`viewer_email`,`date_created`) VALUES ('$email',NOW())";
+                $viewer_exec = mysqli_query($conn, $viewer);
+                if ($viewer_exec) {
+                    die(json_encode(array("success" => "registered")));
+                } else {
+                    die(json_encode(array("dataerror" => "unregistered")));
+                }
+            }
+            else{
+                die(json_encode(array("Duplicate" => "We already have your details")));
+
+            }
+        }
+        else
+        {
+            die(json_encode(array("empty_input" => "You can't leave the space empty dumbo")));
+        }
+    }
+
+
+    if (!empty($_POST['deletesub'])) {
+
+        $viewer_id=$_POST['deletesub'];
+
+
+       $insertSql = "DELETE FROM `viewer` WHERE `viewer_id`={$viewer_id}";
+        $insertSql_exec = mysqli_query($conn, $insertSql);
+        if ($insertSql_exec) {
+            die(json_encode(array("success" => "Deleting")));
+
+        } else {
+            die(json_encode(array("insertErr" => "Unable to delete")));
+        }
+
+
+
+    }
+    ###Delete subscriber####
 }
 
     ?>
