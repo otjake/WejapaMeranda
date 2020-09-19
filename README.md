@@ -17,7 +17,7 @@ Index page:
 <br><br><br>
 
 Code Structure:
-<img src="images/Capture2.PNG" width='1600' height='500' />
+<img src="images/Capture1.PNG" width='1600' height='500' />
 
 #TECH
 1) HTML
