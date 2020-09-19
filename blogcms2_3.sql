@@ -37,19 +37,14 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `date_created` timestamp NULL DEFAULT NULL,
   `date_modified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id`, `name`, `username`, `email`, `password`, `roles`, `date_created`, `date_modified`) VALUES
-(11, 'Jake', 'jake', 'larex@yahoo.com', 'Password123*', 2, NULL, NULL),
-(13, 'Jake', 'Superadmin', 'jake@yahoo.com', 'Password123*', 2, NULL, NULL),
-(14, 'Jake', 'Superadmin', 'jaketuriacada@gmail.com', 'Password123*', 2, NULL, NULL),
-(15, 'Jake', 'Superadmin', 'gblend@gmail.com', 'Password123**', 1, NULL, '2020-09-14 10:40:01'),
-(16, 'Jake', 'wizkid', 'larex090@yahoo.com', 'Password123**/', 1, NULL, NULL),
-(17, 'love', 'wizkid', 'shinnigami@gmail.com', 'Password123*', 2, '2020-09-14 10:35:36', '2020-09-14 10:41:12');
+INSERT INTO `admin` (`name`, `username`, `email`, `password`, `roles`, `date_created`, `date_modified`) VALUES
+('Jake', 'jake', 'larex@yahoo.com', 'Password123*', 2, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -64,8 +59,7 @@ CREATE TABLE IF NOT EXISTS `headline` (
   `headline_status` int(11) NOT NULL,
   PRIMARY KEY (`headline_id`),
   KEY `post_code` (`post_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 -- --------------------------------------------------------
 
 --
@@ -78,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `menu` (
   `date_created` timestamp NULL DEFAULT NULL,
   `date_modified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -98,12 +92,15 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `posts_author` varchar(255) NOT NULL,
   `editor_pick` int(11) DEFAULT NULL,
   `posts_status` int(255) DEFAULT NULL,
-  `date_created` datetime DEFAULT current_timestamp(),
+  `date_created` datetime NOT NULL,
   `date_modified` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`posts_id`),
   KEY `postcode` (`post_code`),
-  KEY `userid` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8mb4;
+     CONSTRAINT `postcode` FOREIGN KEY (`post_code`) REFERENCES `headline` (`post_code`) ON DELETE CASCADE,   
+  KEY `userid` (`user_id`),
+      CONSTRAINT `userid` FOREIGN KEY (`user_id`) REFERENCES `admin` (`id`) ON DELETE CASCADE
+    
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -116,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `viewer` (
   `viewer_email` varchar(255) NOT NULL,
   `date_created` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`viewer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Constraints for dumped tables
@@ -125,9 +122,9 @@ CREATE TABLE IF NOT EXISTS `viewer` (
 --
 -- Constraints for table `posts`
 --
-ALTER TABLE `posts`
-  ADD CONSTRAINT `postcode` FOREIGN KEY (`post_code`) REFERENCES `headline` (`post_code`) ON DELETE CASCADE,
-  ADD CONSTRAINT `userid` FOREIGN KEY (`user_id`) REFERENCES `admin` (`id`) ON DELETE CASCADE;
+
+ 
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

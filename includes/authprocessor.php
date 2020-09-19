@@ -194,7 +194,7 @@ if (!empty($_POST['check']) && ($_POST['check'] == "reset")) {
             $password=$row['password'];
 
 
-
+            #####Email sending####
 
             require 'includes/mail/PHPMailerAutoload.php';
             date_default_timezone_set('UTC');
@@ -204,15 +204,13 @@ if (!empty($_POST['check']) && ($_POST['check'] == "reset")) {
             $mail->isSMTP();
             $mail->isHTML(true);
             $mail->Host = 'smtp.mailtrap.io';//host address
-//            $mail->Host = 'smtp.gmail.com';//host address
             $mail->SMTPAuth = true;
             $mail->Port = 2525;
             $mail->SMTPSecure = "TLS";
             $mail->Username = '1b983ed768cbbb';//email username
             $mail->Password = 'b3a282848a49f0';//password
-//            $mail->Username = 'jaketuriacada@gmail.com';//email username
-//            $mail->Password = 'ixpupipsiberagcs';//password
-            $mail->setFrom('jaketuriacada@gmail.com');
+
+            $mail->setFrom('test@gmail.com');
             $mail->addAddress($email);
             $mail->Subject = 'Here is the subject';
             $mail->Body    ='<body style="margin: 0; padding: 0;">
