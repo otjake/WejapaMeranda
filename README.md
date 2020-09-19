@@ -1,16 +1,21 @@
-#Meranda
+<b>Meranda</b>
+<br>
 This is a blog site with more than one content creator and a super admin,
 User can create an account and create contents of their own and publish 
 on the site pages
 
-#Motivation
+<b>Motivation</b>
+<br>
 This was made to fulfill the final test for Wejapa internship project and to test how independent I am now.
 
-#Code style
+
+<b>Code style</b>
+<br>
 The system follows a very basic code style,having page contents in the root folder,needed functions, processors and common files(header,footer,sidebar) in the includes folder,
 style sheets in a css folder and javascript in a js folder.
 
-#Screenshots
+<b>Screenshots</b>
+</br>
 Index page:
 
 <img src="images/Capture.PNG" width='1600' height='500' />
@@ -19,21 +24,23 @@ Index page:
 Code Structure:
 <img src="images/Capture1.PNG" width='1600' height='500' />
 
-#TECH
+<b>TECH</b>
+</br>
 1) HTML
 2) Bootstrap
 3) CSS
 4) Javascript(Jquery)
 5) PHP
 
-#Features
+<b>Features</b>
+</br>
 The system offers a compact and concise user, admin view
 within a few pages ,allowing as many users(writers) as possible
 to create contents and either publish immediately or save for 
 later dates to publish(like a draft).
 
-#Installation
-
+<b>Installation</b>
+</br>
 Follow this steps to run the software.
 
 1. Clone repo into your local servers,www directory(wampp) or htdocs (xampp),
@@ -43,7 +50,8 @@ Follow this steps to run the software.
  "[http://localhost/WejapaMeranda/index.php]"
 
 
-#How to use
+<b>How to use</b>
+</br>
 1.When a new user registers,they get a role of 1 and have access to the front view pages,post creation page
  and page that shows posts they have created,so they can update or delete.
 2. At least one super admin has to be hard coded to the database with a role of 2.
@@ -51,6 +59,7 @@ Follow this steps to run the software.
 4. Admin can change user roles and rights and update their details.
 4. Edit email details  to perform password resets.
 
-#Contribute
+<b>Contribute</b>
+</br>
 It lacks a comment-reply system,for each post,
 and am open to contributions.
