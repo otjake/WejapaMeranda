@@ -23,13 +23,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
         if (empty($_POST['username'])) {
-            $error['usernameErr'] = "You must Enter your Last name";
+            $error['usernameErr'] = "You must Enter a username";
             die(json_encode(array("usernameErr" => $error['usernameErr'])));
 
         } else {
 
-            if (!preg_match("/^[a-zA-Z ]*$/", $_POST['username'])) {
-                $error['usernameErr'] = "Only letters and white space allowed";
+            if (!preg_match("/^[a-zA-Z0-9 ]*$/", $_POST['username'])) {
+                $error['usernameErr'] = "Only letters and white space allowed for username";
                 die(json_encode(array("usernameErr" => $error['usernameErr'])));
 
             }
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             } else {
                 $roles=1;
 
-                $sql = "INSERT INTO admin (name,username,email,password,roles) VALUES ('$name','$username','$email','$password',$roles)";
+                $sql = "INSERT INTO admin (name,username,email,password,roles,date_created) VALUES ('$name','$username','$email','$password',$roles,NOW())";
 
                 $sql_exec = mysqli_query($conn, $sql);
 
@@ -141,15 +141,17 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 $loginSql="SELECT * FROM admin WHERE email='{$email}' AND password='{$password}'";
 $loginSql_exec=mysqli_query($conn,$loginSql);
 $count=mysqli_num_rows($loginSql_exec);
-if($count > 0){
-   $row=mysqli_fetch_assoc($loginSql_exec);
-        $_SESSION['role'] =$row['roles'];
-        $_SESSION['username'] =$row['username'];
-        $_SESSION['user_id'] =$row['id'];
-    die(json_encode(array("success" => "Redirecting...")));
+if($count > 0) {
 
+    while ($row = mysqli_fetch_assoc($loginSql_exec)) {
+        $_SESSION['role'] = $row['roles'];
+        $_SESSION['username'] = $row['username'];
+        $_SESSION['user_id'] = $row['id'];
+        die(json_encode(array("success" => "Redirecting...")));
+
+    }
 }else{
-    $error['main'] = "Invalid Details";
+    $error['mainErr'] = "Invalid Details";
     die(json_encode(array("notificationErr" => $error['mainErr'])));
 }
 
@@ -192,7 +194,7 @@ if (!empty($_POST['check']) && ($_POST['check'] == "reset")) {
             $password=$row['password'];
 
 
-
+            #####Email sending####
 
             require 'includes/mail/PHPMailerAutoload.php';
             date_default_timezone_set('UTC');
@@ -202,15 +204,13 @@ if (!empty($_POST['check']) && ($_POST['check'] == "reset")) {
             $mail->isSMTP();
             $mail->isHTML(true);
             $mail->Host = 'smtp.mailtrap.io';//host address
-//            $mail->Host = 'smtp.gmail.com';//host address
             $mail->SMTPAuth = true;
             $mail->Port = 2525;
             $mail->SMTPSecure = "TLS";
             $mail->Username = '1b983ed768cbbb';//email username
             $mail->Password = 'b3a282848a49f0';//password
-//            $mail->Username = 'jaketuriacada@gmail.com';//email username
-//            $mail->Password = 'ixpupipsiberagcs';//password
-            $mail->setFrom('jaketuriacada@gmail.com');
+
+            $mail->setFrom('test@gmail.com');
             $mail->addAddress($email);
             $mail->Subject = 'Here is the subject';
             $mail->Body    ='<body style="margin: 0; padding: 0;">
@@ -246,9 +246,13 @@ if (!empty($_POST['check']) && ($_POST['check'] == "reset")) {
                             <tr>
                                 <td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
                                 <strong>You are not excited ??? ,We do not take security lightly here at Meranda ,so you feel your previous password has been compromised reach the admin for a password reset,</strong>
-                                <strong>sending us the email you registered with on this side mail.</strong>
+                                <strong>sending us the email address you registered with on this our platform and a prefered password.</strong>
                                 
                                 <p><strong>Admin:<a href = "mailto: jaketuriacada@gmail.com">jaketuriacada@gmail.com</a></strong></p>
+                                
+                                
+                                <strong>Expect an email soon!!!!</strong>
+
                                 </td>
                             </tr>
                         </table>

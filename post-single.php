@@ -1,5 +1,10 @@
 
-<?php include ("includes/header.php");
+<?php session_start();
+include ("includes/header.php");
+
+if (!isset($_SESSION['username']) && ($_SESSION["role"]!=1 || $_SESSION["role"]!=2 )) {
+    header("Location:login.php");
+}
 
 if(isset($_GET['id']) && !empty($_GET['id'])){
     $page_id=$_GET['id'];

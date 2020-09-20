@@ -1,14 +1,20 @@
 <?php
+session_start();
+include ("includes/header.php");
 
-include ("includes/header.php")?>
-<div class="col-md-10 offset-1 my-5">
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+if (!isset($_SESSION['username']) && ($_SESSION["role"]!=1 || $_SESSION["role"]!=2 )) {
+    header("Location:login.php");
+
+}
+?>
+<div class="col-md-10 offset-1 my-3">
+<div id="carouselExampleIndicatorsss" class="carousels slides" data-ride="carousels">
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
     </ol>
-    <div class="carousel-inner" >
+    <div class="carousel-inner">
             <?php
             $editors_pick=Editor_pick(3);
             $editors_pick_count=mysqli_num_rows($editors_pick);
@@ -34,9 +40,9 @@ include ("includes/header.php")?>
                     ?>
 
 
-                    <div class="half-post-entry d-block d-lg-flex bg-light my-4">
+                    <div class="half-post-entry d-block d-lg-flex bg-light">
                         <div class="img-bg" style="background-image: url('images/<?php echo $image; ?>')"></div>
-                        <div class="contents">
+                        <div class="contents ">
                             <span class="caption text-capitalize">Bloggers Favourite</span>
                             <h2><a href="post-single.php?id=<?php echo $post_id; ?>" style="color: blue"><?php echo $title;?></a></h2>
                             <p><?php echo $body_lim;?></p>
@@ -76,10 +82,10 @@ include ("includes/header.php")?>
     </a>
 </div>
 </div>
-<div class="site-section">
+<div class="site-section ">
 <div class="container">
-<div class="row">
-<div class="col-lg-8">
+<div class="row slider-under">
+<div class="col-lg-12">
 <div class="row">
 <div class="col-12">
 <div class="section-title">
@@ -116,7 +122,7 @@ include ("includes/header.php")?>
     $date=$row['date_created'];
 
     ?>
-<div class="post-entry-2 d-flex">
+<div class="post-entry-2 d-flex my-3">
 <div class="thumbnail" style="background-image: url('images/<?php echo $image;?>')"></div>
 <div class="contents">
     <h2><a href="post-single.php?id=<?php echo $post_id; ?>" style="color: blue"><?php echo $title;?></a></h2>
@@ -187,7 +193,10 @@ include ("includes/header.php")?>
 </div>
 <div class="site-section">
 <div class="container">
-<div class="row">
+    <h2>HEADLINES</h2>
+
+    <div class="row">
+
     <?php
     $editors_pick=head_line_sought();
     while ($row=mysqli_fetch_assoc($editors_pick)){
@@ -199,7 +208,7 @@ include ("includes/header.php")?>
     ?>
 <div class="col-lg-6">
 <div class="section-title">
-<h2><?php echo $headLine; ?></h2>
+<h2 style="font-size: 20px"><?php echo $headLine; ?></h2>
 </div>
     <?php
     $per_headline="SELECT `posts_id`, `menu_id`, `posts_title`, `post_code`, `posts_body`, `posts_tags`, `posts_img`, `posts_author`, `editor_pick`, `posts_status`, `date_created`
@@ -215,7 +224,7 @@ include ("includes/header.php")?>
         $author=$post_row['posts_author'];
         $date=$post_row['date_created'];
         ?>
-<div class="post-entry-2 d-flex">
+<div class="post-entry-2 d-flex my-5">
 <div class="thumbnail mx-4" style="background-image: url('images/<?php  echo $image; ?>')"></div>
 <div class="contents">
     <h2><a href="post-single.php?id=<?php echo $post_id; ?>" style="color: blue"><?php echo $title;?></a></h2>
